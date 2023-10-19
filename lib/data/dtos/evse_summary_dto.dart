@@ -6,7 +6,7 @@ class EvseSummaryDTO {
   /// Status of the charges.
   final String? status;
 
-  ///Connector type.
+  /// Connector type.
   final String? connectorType;
 
   /// Power type

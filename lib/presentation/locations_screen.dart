@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:green_flux_test/domain/use_cases/get_locations_use_case.dart';
 
 import '../data/network/green_flux_net_client.dart';
 import '../data/providers/locations_provider.dart';
+import '../domain/repositories/locations_repository.dart';
 
 class LocationsScreen extends StatefulWidget {
   const LocationsScreen({super.key, required this.title});
@@ -39,18 +41,15 @@ class _LocationsScreenState extends State<LocationsScreen> {
   Widget build(BuildContext context) {
     final provider = LocationsProvider(
       netClient: GreenFluxNetClient(
-        apiKey: '7968af1a-f683-4fd6-8ce3-6a7a896bbb56',
+        apiKey: '',
       ),
     );
-    provider.getLocations('amst').then((value) {
+    final repository = LocationsRepository(provider: provider);
+    final getLocationsUseCase = GetLocationsUseCase(repository: repository);
+    getLocationsUseCase('amst').then((value) {
       print(value);
     });
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
