@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../models/location.dart';
@@ -16,6 +17,7 @@ EventTransformer<Event> debounce<Event>(Duration duration) =>
     (events, mapper) => events.debounce(duration).switchMap(mapper);
 
 /// A BLoC that handles the business logic for the Locations screen.
+@injectable
 class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
   /// The GetLocationsUseCase to use.
   final GetLocationsUseCase _getLocationsUseCase;

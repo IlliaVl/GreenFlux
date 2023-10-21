@@ -1,7 +1,10 @@
+import 'package:injectable/injectable.dart';
+
 import '../abstracts/network/net_client.dart';
 import '../dtos/location_summary_dto.dart';
 
 /// Locations data provider.
+@singleton
 class LocationsProvider {
   static const _locationsEndpoint = '/locations';
 
