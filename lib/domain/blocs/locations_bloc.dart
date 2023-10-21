@@ -11,14 +11,11 @@ import '../use_cases/get_locations_use_case.dart';
 part 'locations_event.dart';
 part 'locations_state.dart';
 
-const _duration = Duration(milliseconds: 300);
-
-EventTransformer<Event> debounce<Event>(Duration duration) =>
-    (events, mapper) => events.debounce(duration).switchMap(mapper);
-
 /// A BLoC that handles the business logic for the Locations screen.
 @injectable
 class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
+  static const debounceDuration = Duration(milliseconds: 300);
+
   /// The GetLocationsUseCase to use.
   final GetLocationsUseCase _getLocationsUseCase;
 
@@ -29,9 +26,12 @@ class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
         super(LocationsEmptyState()) {
     on<CityChangeEvent>(
       _getLocations,
-      transformer: debounce(_duration),
+      transformer: _debounce(debounceDuration),
     );
   }
+
+  EventTransformer<Event> _debounce<Event>(Duration duration) =>
+      (events, mapper) => events.debounce(duration).switchMap(mapper);
 
   /// Handles the CityChangeEvent event.
   FutureOr<void> _getLocations(
@@ -50,6 +50,7 @@ class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
       final locations = await _getLocationsUseCase(event.city);
       emit(LocationsLoadedState(locations: locations));
     } catch (error) {
+      emit(LocationsStateError(error.toString()));
       print(error);
     }
   }
