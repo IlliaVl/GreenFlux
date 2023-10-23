@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:green_flux_test/domain/blocs/locations_bloc.dart';
 
 import 'config/injection.dart';
-import 'presentation/screens/locations_screen.dart';
+import 'presentation/screens/locations_screen/locations_screen.dart';
 
 void main() {
   configureDependencies();
