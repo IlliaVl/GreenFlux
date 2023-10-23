@@ -1,16 +1,26 @@
-# green_flux_test
+# GreenFlux Flutter Assignment
 
-A new Flutter project.
+Flutter app where users can search for charge locations by city and see charge location details.
+The API endpoint to fetch the data is `https://app-flutter-locations-test.azurewebsites.net/`.
 
-## Getting Started
+## How to launch
 
-This project is a starting point for a Flutter application.
+Steps to launch app:
 
-A few resources to get you started if this is your first Flutter project:
+1. Create or add to the root directory of project .env file with the following line:
+   GREEN_FLUX_API_KEY=API_KEY
+   Where API_KEY is the key for authorization. Replace it with the real value.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. Run `dart run build_runner build --delete-conflicting-outputs` from the root directory of the project.
+   It will create `env.g.dart` and `injection.config.dart` files.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. Launch app as usual Flutter project.
+
+
+## Brief explanation
+
+Clean architecture is used for app. BLoC - as a state management.
+`injectable` and `get_it` packages are used for handling dependencies.
+`envied` package is used for handling API key.
+`bloc_test`,`mocktail` and `test` packages are used for unit tests.
+
