@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -50,8 +51,11 @@ class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
       final locations = await _getLocationsUseCase(event.city);
       emit(LocationsLoadedState(locations: locations));
     } catch (error) {
-      emit(LocationsStateError(error.toString()));
-      print(error);
+      if (error is DioException && error.response?.statusCode == 400) {
+        emit(const LocationsStateError(LocationsError.minimumLength));
+      } else {
+        emit(const LocationsStateError(LocationsError.unknown));
+      }
     }
   }
 }

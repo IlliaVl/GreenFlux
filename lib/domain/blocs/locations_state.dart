@@ -31,7 +31,7 @@ final class LocationsLoadedState extends LocationsState {
 
 /// A [LocationsState] that represents an error state.
 final class LocationsStateError extends LocationsState {
-  final String error;
+  final LocationsError error;
 
   /// Creates a new [LocationsStateError] instance.
   const LocationsStateError(this.error);
@@ -39,3 +39,5 @@ final class LocationsStateError extends LocationsState {
   @override
   List<Object?> get props => [error];
 }
+
+enum LocationsError { unknown, minimumLength }

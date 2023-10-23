@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dio/dio.dart';
 import 'package:green_flux_test/domain/blocs/locations_bloc.dart';
 import 'package:green_flux_test/domain/models/location.dart';
 import 'package:green_flux_test/domain/use_cases/get_locations_use_case.dart';
@@ -83,14 +84,13 @@ void main() {
       ],
     );
 
-    final exception = Exception('Error');
     blocTest<LocationsBloc, LocationsState>(
-      'emits LoadingState and handles errors gracefully',
+      'emits LoadingState and handles common error gracefully',
       build: () {
         when(
           () => getLocationsUseCase.call(any()),
         ).thenThrow(
-          exception,
+          Exception('Error'),
         );
         return locationsBloc;
       },
@@ -98,7 +98,31 @@ void main() {
       wait: LocationsBloc.debounceDuration,
       expect: () => [
         LocationsLoadingState(),
-        LocationsStateError(exception.toString()),
+        const LocationsStateError(LocationsError.unknown),
+      ],
+    );
+
+    blocTest<LocationsBloc, LocationsState>(
+      'emits LoadingState and handles minimum characters error gracefully',
+      build: () {
+        when(
+          () => getLocationsUseCase.call(any()),
+        ).thenThrow(
+          DioException(
+            requestOptions: RequestOptions(),
+            response: Response(
+              requestOptions: RequestOptions(),
+              statusCode: 400,
+            ),
+          ),
+        );
+        return locationsBloc;
+      },
+      act: (bloc) => bloc.add(const CityChangeEvent(city: city)),
+      wait: LocationsBloc.debounceDuration,
+      expect: () => [
+        LocationsLoadingState(),
+        const LocationsStateError(LocationsError.minimumLength),
       ],
     );
   });

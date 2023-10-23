@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:green_flux_test/presentation/extensions/locations_error_extensions.dart';
 
 import '../../../domain/blocs/locations_bloc.dart';
 import 'widgets/locations_list_widget.dart';
@@ -29,12 +30,12 @@ class LocationsScreen extends StatelessWidget {
           ),
           BlocBuilder<LocationsBloc, LocationsState>(
             builder: (context, state) => switch (state) {
-              LocationsEmptyState() => const Text('Empty.'),
+              LocationsEmptyState() => Container(),
               LocationsLoadingState() => const CircularProgressIndicator(),
               LocationsLoadedState() => const Expanded(
                   child: LocationsListWidget(),
                 ),
-              LocationsStateError() => const Text('Error.')
+              LocationsStateError() => Text(state.error.string)
             },
           ),
         ],
